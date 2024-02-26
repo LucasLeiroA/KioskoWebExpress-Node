@@ -2,6 +2,7 @@ import express from 'express';
 import config from './config.js';
 import registrarStock from './routes/registrarStock.routes.js'
 import loginRegistrarStock from './routes/loginRegistrarStock.routes.js'
+import ventas from './routes/ventas.routes.js'
 import cors from 'cors';
 
 
@@ -40,5 +41,6 @@ app.set('views',path.join(__dirname,'views'))
 //routes
 app.use(registrarStock);
 app.use(loginRegistrarStock)
+app.use(ventas)
 
 export default app;

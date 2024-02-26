@@ -1,0 +1,126 @@
+<%- include('../partials/header.ejs') %>
+
+
+<div class="container-fluid pt-5 text-center">
+  <div class="col-12 col-lg-5 col-sm-8 m-auto mt-5 mb-5">
+    <form action="/ventas/filter" method="POST" class="d-flex">
+      <input
+        name = "busqueda"
+        class="form-control me-2"
+        type="search"
+        placeholder="Ingrese el Articulo"
+     
+      />
+      <button class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+
+  </div>
+
+  <div class="row">
+    <div class="table-responsive col-12 col-lg-5 col-sm-12 ">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>Numero</th>
+            <th>Articulo</th>
+            <th>Precio de Venta</th>
+            <th><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-plus" viewBox="0 0 16 16">
+              <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z"/>
+              <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+            </svg></th>
+          </tr>
+        </thead>
+
+        <tbody class="table-group-divider">
+          <% if(data){ %> <% for(var i=0 ; i < data.length ; i++){ %>      
+              <tr>
+                      <th><%= data[i].articulo_id %></th>
+                      <th class="articulo-nombre"><%= data[i].articulo_nombre %></th>
+                      <th class="articulo-precioVenta"><%= data[i].articulo_precioVenta %></th>        
+                      <th><button class="boton-selector btn bg-info" data-id="<%= data[i].articulo_id %>" data-name="<%= data[i].articulo_nombre %>" data-price="<%= data[i].articulo_precioVenta %>">Add</button></th>      
+              </tr>
+          <%}}%>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-7 align-self-start">
+      <div class="card-body">
+        <table class="table table-info">
+          <thead>
+            <tr>
+              <th>Articulo</th>
+              <th>Cantidad</th>
+              <th>Precio de Venta</th>
+              <th>Total</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+  
+          <tbody id="cart-table" class="table-group-divider">
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  var cart = [];
+
+  const btnSelect = document.querySelectorAll('.boton-selector');
+
+  btnSelect.forEach((boton) => {
+    boton.addEventListener('click' , (e) =>{
+
+      document.getElementById('cart-table').innerHTML = '';
+
+          const id = e.target.dataset.id;
+          const nombre =  e.target.dataset.name;
+          const price = e.target.dataset.price;
+
+      const infoProduct = {
+        id:id,
+        quantity : 1,
+        nombre : nombre,
+        price : price
+        
+      }
+      const exist = cart.some(product => product.id === infoProduct.id)
+
+      if(exist){
+        const products = cart.map(product => {
+          if(product.id === infoProduct.id){
+             product.quantity ++
+             return product
+          }else{
+            return product
+          }
+        })
+        cart = [...products]
+      }else{
+
+        cart = [...cart,infoProduct]
+      }
+
+
+      cart.forEach((p) => {
+        document.getElementById('cart-table').innerHTML += `          <tr>
+                          <th>${p.nombre}</th>    
+                          <th>${p.quantity}</th>
+                          <th>${p.price}</th>
+                          <th>${p.quantity * p.price}</th>
+                  </tr>`
+      })
+
+      console.log(cart);
+      
+    })
+
+
+
+  })
+
+</script>
