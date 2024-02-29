@@ -114,9 +114,10 @@
                   <input id="inputDni" class="form-control me-2 mt-3" placeholder="dni" disabled>
                 </div>
         </div>
-      <div class="mt-2">
+      <div id="btn-agregarVenta" class="mt-2">
 
-        <button id="btn-confirmar" class="btn btn-success">Accept</button>
+        
+        
       </div>
       </div>
     </div>
@@ -126,10 +127,23 @@
 
 
 <script>
+
+
+
+
   getClient();
+ 
+
+
   if (localStorage.carrito) {
-    var cart = JSON.parse(localStorage.carrito);
-  }
+    var cart  = JSON.parse(localStorage.carrito);
+   
+   
+       
+ }
+
+     
+
 
   function btnDelete (prodId){
   
@@ -179,6 +193,7 @@
       }
 
       ShowHtml();
+    
     });
   });
 
@@ -223,10 +238,25 @@
                                 </button></th>        
             </tr>
       `;
+      
+      var idProduct = []
+      var quantityProduct = []
+      for (let i = 0; i < cart.length; i++) {
+
+        idProduct.push(cart[i].id)
+        quantityProduct.push(cart[i].quantity)
+
+        //seguir desde acacacaca
+      }
+     
+      document.getElementById('btn-agregarVenta').innerHTML= ` 
+          <a href="/ventas/add/${idProduct}/${quantityProduct}/${total}" class="btn btn-success">Aceptar</a>
+          `
   }
 
   if (cart != undefined) {
     ShowHtml();
+   
   }
 
   function payOnchange(){
@@ -268,8 +298,13 @@
       
   }
 
-  document.getElementById("btn-confirmar").addEventListener("click" , ()=>{
-      window.confirm("sure")
-  })
+  function parametros(){
+ 
+ }
+ 
+
+
+
+
 
 </script>

@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 app.use(express.json());   
 app.use(express.urlencoded({extended:false}))
 app.use(cors())
+
 //settings
 app.use(express.static(path.join(__dirname,'public')));
 app.set("port" , config.port)
