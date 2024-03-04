@@ -3,6 +3,7 @@ import config from './config.js';
 import registrarStock from './routes/registrarStock.routes.js'
 import loginRegistrarStock from './routes/loginRegistrarStock.routes.js'
 import ventas from './routes/ventas.routes.js'
+import reportes from './routes/reportes.routes.js'
 import cors from 'cors';
 
 
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
     
     next();
     })
+    
 app.use(express.json());   
 app.use(express.urlencoded({extended:false}))
 app.use(cors())
@@ -43,5 +45,6 @@ app.set('views',path.join(__dirname,'views'))
 app.use(registrarStock);
 app.use(loginRegistrarStock)
 app.use(ventas)
+app.use(reportes)
 
 export default app;

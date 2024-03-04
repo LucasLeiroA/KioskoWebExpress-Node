@@ -1,0 +1,25 @@
+<%- include('../partials/header.ejs') %>
+
+
+<div class="container-fluid pt-5 text-center w-25 mt-5">
+    <select name="selecTipo" class="form-select bg-dark text-light" id="select-reporte" onchange="ReporteOnchange()">
+             
+        <option   value="VentasTotales">Ventas Totales</option>
+            <option selected  value="EstadoCaja">Estado de Caja</option>
+            <option  value="VentasDelDia">Ventas Del Dia</option>
+        </select>
+</div>
+
+
+
+<script>
+   
+
+    function ReporteOnchange(){
+        var reporte = document.getElementById("select-reporte").value;
+        window.location.replace(`/reportesMultiples/${reporte}`)
+
+        
+    }
+
+</script>

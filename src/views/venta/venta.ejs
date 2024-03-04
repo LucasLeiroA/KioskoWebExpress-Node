@@ -99,10 +99,11 @@
       </div>
       <div class="d-flex justify-content-around mt-5 mb-3 m-auto">
         <div >
-              <select class="form-select bg-dark col-12 col-lg-5 col-sm-8 text-light mt-2 mb-5" id="tipo-pago" onchange="payOnchange()">
-                  <option  value="1">Efectivo</option>
-                  <option selected value="2">Cuenta Corriente</option>
-                  <option  value="3">Transferencia</option>
+              <select name="selecTipo" class="form-select bg-dark col-12 col-lg-5 col-sm-8 text-light mt-2 mb-5" id="tipo-pago" onchange="payOnchange()">
+             
+                <option   value="1">Efectivo</option>
+                    <option selected  value="2">Cuenta Corriente</option>
+                    <option  value="3">Transferencia</option>
                 </select>
                 <div id="client-search">
                   <form class="d-flex mb-3" role="search" action="/ventas/clientes" method="POST">
@@ -115,9 +116,8 @@
                 </div>
         </div>
       <div id="btn-agregarVenta" class="mt-2">
-
-        
-        
+       
+      
       </div>
       </div>
     </div>
@@ -128,21 +128,52 @@
 
 <script>
 
-
-
+  
 
   getClient();
  
-
+  function limpiarCliente(){
+    localStorage.removeItem("cliente")
+    localStorage.removeItem("carrito");
+  }
 
   if (localStorage.carrito) {
     var cart  = JSON.parse(localStorage.carrito);
-   
-   
-       
- }
 
+ }
+ var tipoVenta = document.getElementById('tipo-pago').value;
+
+ function payOnchange(){
+    
+  localStorage.removeItem("cliente")
+  tipoVenta = document.getElementById('tipo-pago').value;
+   
+   if(tipoVenta != "2"){
+     document.getElementById('client-search').innerHTML="";
+
+   }else{
+     document.getElementById('client-search').innerHTML=`
      
+
+     <form class="d-flex mb-3" role="search" action="/ventas/clientes" method="POST">
+                   <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="cliente">
+                   <button class="btn btn-outline-success" type="submit">Search</button>
+                 </form>
+         
+                 <input id="inputCliente" class="form-control me-2" placeholder="Cliente" disabled>
+                 <input id="inputDni" class="form-control me-2 mt-3" placeholder="dni" disabled>
+
+
+     `;
+   }
+ 
+   getClient()
+   ShowHtml()
+   limpiarCliente()
+ }   
+
+  
+
 
 
   function btnDelete (prodId){
@@ -198,6 +229,9 @@
   });
 
   function ShowHtml() {
+
+
+   
     var total = 0;
     var totalAll = 0;
     document.getElementById("cart-table").innerHTML = "";
@@ -248,10 +282,19 @@
 
         //seguir desde acacacaca
       }
-     
-      document.getElementById('btn-agregarVenta').innerHTML= ` 
-          <a href="/ventas/add/${idProduct}/${quantityProduct}/${total}" class="btn btn-success">Aceptar</a>
+  
+      if(tipoVenta == 2){
+          let cliente = document.getElementById("inputDni").value;
+          document.getElementById('btn-agregarVenta').innerHTML= ` 
+          <a href="/ventas/add/${idProduct}/${quantityProduct}/${total}/${tipoVenta}/${cliente}" class="btn btn-success" onclick="limpiarCliente()">Aceptar</a>
           `
+      }else{
+        document.getElementById('btn-agregarVenta').innerHTML= ` 
+          <a href="/ventas/add/${idProduct}/${quantityProduct}/${total}/${tipoVenta}" class="btn btn-success" onclick="limpiarCliente()">Aceptar</a>
+          `
+      }
+     
+    
   }
 
   if (cart != undefined) {
@@ -259,30 +302,7 @@
    
   }
 
-  function payOnchange(){
-    let tipo = document.getElementById('tipo-pago').value;
 
-    if(tipo != "2"){
-      document.getElementById('client-search').innerHTML="";
-
-    }else{
-      document.getElementById('client-search').innerHTML=`
-      
-
-      <form class="d-flex mb-3" role="search" action="/ventas/clientes" method="POST">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="cliente">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                  </form>
-          
-                  <input id="inputCliente" class="form-control me-2" placeholder="Cliente" disabled>
-                  <input id="inputDni" class="form-control me-2 mt-3" placeholder="dni" disabled>
-
-
-      `;
-    }
-    getClient()
-
-  }
 
   function getClient(){
       if(localStorage.cliente){
@@ -298,9 +318,8 @@
       
   }
 
-  function parametros(){
- 
- }
+
+
  
 
 

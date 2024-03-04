@@ -1,6 +1,4 @@
 import { getConecction } from "../database/conecction.js"
-import { LocalStorage } from "node-localstorage";
-global.localStorage = new LocalStorage('./scratch');
 import sql from 'mssql'
 
 var fecha  = new Date()
@@ -50,9 +48,11 @@ export const addVenta = async (req ,res ) => {
     const idProduc = (req.params.idProducto).split(",")
     const quantity = (req.params.quantityProduct).split(",")
     const montoTotal = (req.params.montoTotal)
+    const tipoVenta = req.params.tipoVenta;
+   const clienteDni = req.params.dniCliente;
+
 
     // array para guardas todos los productos del carrito
-    
 
     //obteniendo el ultimo numero de factura
     let lastFacNum = (await pool.request().query(`SELECT TOP 1 venta_nro FROM venta ORDER BY venta_id DESC`)).recordset; 
@@ -68,10 +68,15 @@ export const addVenta = async (req ,res ) => {
     }
    
 
-    
     // insertando la nueva venta 
-
-  await pool.request().query(`insert into venta(venta_nro,venta_montoTotal,estadoVenta_id,tipoVenta_id) values(${lastFacNum},${montoTotal},1,1)`);
+    if (parseInt(tipoVenta)  == 2) {
+  
+        var idCliente = ((await pool.request().query(`select cliente_id from cliente where cliente_dni =${clienteDni}`)).recordset)
+     await pool.request().query(`insert into venta(venta_nro,venta_montoTotal,estadoVenta_id,tipoVenta_id,cliente_id) values(${lastFacNum},${montoTotal},1,${parseInt(tipoVenta) },${idCliente[0].cliente_id})`);
+    }else{
+        await pool.request().query(`insert into venta(venta_nro,venta_montoTotal,estadoVenta_id,tipoVenta_id) values(${lastFacNum},${montoTotal},1,${parseInt(tipoVenta) })`);
+        
+    }
 
   let lastVenta = (await pool.request().query(`SELECT TOP 1 venta_id FROM venta ORDER BY venta_id DESC`)).recordset;
 
@@ -83,24 +88,13 @@ export const addVenta = async (req ,res ) => {
     }else{
         lastVenta = parseInt(JSON.stringify(lastVenta[0].venta_id))
     }
-    
-    var products =  []
+        var products =  []
 
     for (let i = 0; i < idProduc.length; i++) {
     
     let product = (await pool.request().query(`select * from articulo where articulo_id = ${idProduc[i]}`)).recordset;
 
     products.push(product)
-
-        
-         console.log(parseInt(quantity[i]));
-    
-        //console.log(parseInt(idProduc[i]) + 1);
-        //console.log(lastVenta);
-        //console.log(parseInt(idProduc[i]));
-        //console.log(product[0].articulo_precioVenta);
-        
-        //console.log((product[0].articulo_precioVenta)*parseInt(quantity[i]));
         
         
       await pool.request().query(`insert into detalle_venta (venta_id,articulo_id,precioVenta,cantidad,subtotal) values(${lastVenta},${parseInt(idProduc[i])},${product[0].articulo_precioVenta},${parseInt(quantity[i]) },${(product[0].articulo_precioVenta)*parseInt(quantity[i])})`);
@@ -110,7 +104,7 @@ export const addVenta = async (req ,res ) => {
 
   
   
-    res.send(products) 
+    res.send("idCliente") 
  
 
 }
