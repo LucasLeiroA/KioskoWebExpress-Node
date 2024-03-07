@@ -12,8 +12,8 @@
            <% } %>
             <h6>nro factura :    ---   <%= venta[0].venta_nro %>
                ---</h6>
-            <h6>Fecha:  <%= fechaVenta %></h6>
-            <h6>Hora:  <%= venta_hora %></h6>
+            <h6>Fecha:  <%= venta_fecha %></h6>
+      
             <table class="table table-white">
                 <thead class="table-warning">
                     <tr>
@@ -37,7 +37,7 @@
                 <tfoot class="table-info">
                     <th>
                         <th>
-                            
+                          
                         </th>
                         <th>
                             TOTAL
@@ -52,7 +52,7 @@
             <%}%>
     </div>
     <div class="text-center w-100 mb-3">
-        <a class="btn btn-danger col-lg-8 col-sm-10 col-8" href="/reportesMultiples/VentasTotales">Volver</a>
+        <a class="btn btn-danger col-lg-8 col-sm-10 col-8" href="/reportesMultiples/<%=url%>/<%=fecha%>">Volver</a>
     </div>
     </div>
    

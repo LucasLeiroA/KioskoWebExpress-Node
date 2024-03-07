@@ -1,25 +1,65 @@
 <%- include('../partials/header.ejs') %>
 
-
 <div class="container-fluid pt-5 text-center w-25 mt-5">
-    <select name="selecTipo" class="form-select bg-dark text-light" id="select-reporte" onchange="ReporteOnchange()">
-             
-        <option   value="VentasTotales">Ventas Totales</option>
-            <option selected  value="EstadoCaja">Estado de Caja</option>
-            <option  value="VentasDelDia">Ventas Del Dia</option>
-        </select>
+  <select
+    name="selecTipo"
+    class="form-select bg-dark text-light"
+    id="select-reporte"
+    onchange="ReporteOnchange()"
+  >
+    <option disabled selected>Seleccione el Reporte</option>
+    <option value="EstadoCaja">Estado de Caja</option>
+    <option value="ventasPorFecha">Ventas Por Fecha</option>
+    <option value="ventasPorFechaContado">Ventas Por Fecha Contado</option>
+    <option value="VentasPorFechaTransferencia">Ventas Por Fecha Transferencia</option>
+    <option value="ventasPorMes">Ventas Por Mes</option>
+    <option value="ventasPorMesContado">Ventas Por Mes Contado</option>
+    <option value="ventasPorMesContadoTransfencia">Ventas Por Mes Transferencia</option>
+    
+  </select>
+
+  <div id="container-date">
+ 
+  </div>
+  <div id="btn-filter"></div>
 </div>
 
-
-
 <script>
-   
-
-    function ReporteOnchange(){
-        var reporte = document.getElementById("select-reporte").value;
-        window.location.replace(`/reportesMultiples/${reporte}`)
-
-        
+  function inputDateOnchage() {
+    const fecha = document.getElementById("reporte-date").value;
+    var reporte = document.getElementById("select-reporte").value;
+    console.log(reporte);
+    if (reporte === "ventasPorFecha" || reporte === "ventasPorMes" || reporte === "ventasPorFechaContado" || reporte === "VentasPorFechaTransferencia" || reporte === "ventasPorMesContado" || reporte === "ventasPorMesContadoTransfencia") {
+       return   document.getElementById("btn-filter").innerHTML = `
+             <a href="/reportesMultiples/${reporte}/${fecha}" class="btn btn-info mt-2 text-light">Filtrar</a>
+             `;
     }
+ 
+     
+  }
 
+  function ReporteOnchange() {
+    var reporte = document.getElementById("select-reporte").value;
+
+    if(reporte === "ventasPorMes" || reporte ===  "ventasPorMesContado" ||reporte ===  "ventasPorMesContadoTransfencia"){
+
+        return document.getElementById("container-date").innerHTML = `
+            
+            <input class="form-control mt-5" type="month" id="reporte-date" onchange="inputDateOnchage()">
+           
+            `;
+    }
+    if (reporte === "ventasPorFecha" || reporte === "ventasPorFechaContado" || reporte === "VentasPorFechaTransferencia") {
+    
+     return document.getElementById("container-date").innerHTML = `
+            
+            <input class="form-control mt-5" type="date" id="reporte-date" onchange="inputDateOnchage()">          
+            `;
+
+
+    }else {
+      window.location.replace(`/reportesMultiples/${reporte}`);
+    }
+    
+  }
 </script>

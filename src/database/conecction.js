@@ -1,11 +1,13 @@
 import sql from 'mssql';
+import {DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE} from '../config.js'
+
 
 const dbSettings = {
     
-    user:'sa',
-    password:'lucas1248759',
-    server:'localhost',
-    database:'sistemaKiosko',
+    user:DB_USER,
+    password:DB_PASSWORD,
+    server:DB_HOST,
+    database:DB_DATABASE,
     options:{
         encrypt:true,
         trustServerCertificate:true

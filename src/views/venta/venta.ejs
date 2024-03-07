@@ -99,6 +99,12 @@
       </div>
       <div class="d-flex justify-content-around mt-5 mb-3 m-auto">
         <div >
+          <% if(errormessage){ %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Debe Ingresar un cliente!</strong> 
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <%}%>        
               <select name="selecTipo" class="form-select bg-dark col-12 col-lg-5 col-sm-8 text-light mt-2 mb-5" id="tipo-pago" onchange="payOnchange()">
              
                 <option   value="1">Efectivo</option>
@@ -114,6 +120,7 @@
                   <input id="inputCliente" class="form-control me-2" placeholder="Cliente" disabled>
                   <input id="inputDni" class="form-control me-2 mt-3" placeholder="dni" disabled>
                 </div>
+             
         </div>
       <div id="btn-agregarVenta" class="mt-2">
        
