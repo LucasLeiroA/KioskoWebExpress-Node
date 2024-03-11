@@ -11,7 +11,8 @@ const dbSettings = {
     options:{
         encrypt:true,
         trustServerCertificate:true
-    }
+    },
+    port:1433
 
 }
 
