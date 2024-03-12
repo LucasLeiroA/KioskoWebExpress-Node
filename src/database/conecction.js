@@ -9,10 +9,10 @@ const dbSettings = {
     server:DB_HOST,
     database:DB_DATABASE,
     options:{
-        encrypt:true,
+        encrypt:false,
         trustServerCertificate:true
     },
-    port:1433
+    port: 1433
 
 }
 
