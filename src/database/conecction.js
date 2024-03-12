@@ -4,10 +4,10 @@ import {DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE} from '../config.js'
 
 const dbSettings = {
     
-    user:DB_USER || "sa",
-    password:DB_PASSWORD || "lucas1248759",
-    server:DB_HOST || "localhost",
-    database:DB_DATABASE || "sistemaKiosko",
+    user:DB_USER,
+    password:DB_PASSWORD,
+    server:DB_HOST,
+    database:DB_DATABASE,
     options:{
         encrypt:true,
         trustServerCertificate:true
